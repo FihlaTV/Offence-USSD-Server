@@ -1,7 +1,5 @@
 package org.ussd;
-/**
- * Mock for a ussd message
- */
+
 import hms.sdp.ussd.MchoiceUssdMessage;
 
 public class MockMchoiceUssdMessage implements MchoiceUssdMessage{

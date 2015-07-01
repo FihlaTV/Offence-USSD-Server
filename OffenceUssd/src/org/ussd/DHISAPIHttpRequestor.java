@@ -1,10 +1,5 @@
 package org.ussd;
-/**
- * Handle api requests to the dhis server
- * 
- * @author Vincent P. Minde
- * 
- */
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -26,19 +21,12 @@ public class DHISAPIHttpRequestor {
 	public String get(String url) {
 		return request(url, "GET", null);
 	}
-	/**
-	 * Make request to dhis server
-	 * 
-	 * @param apiUrl {String} api url
-	 * @param method {String} Request Method POST,GET,PUT,DELETE etc
-	 * @param data {String} Data to be sent to server. Can be null if none
-	 * @return
-	 */
-	private String request(String apiUrl, String method, String data) {
+
+	public String request(String apiUrl, String method, String data) {
 		HttpURLConnection connection = null;
 		try {
 			// Create connection
-			URL url = new URL("http://127.0.0.1:8080/demo/api/" + apiUrl);
+			URL url = new URL("http://45.56.121.227/demo/api/" + apiUrl);
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod(method);
 			connection.setRequestProperty("Authorization", "Basic " + auth);
@@ -48,7 +36,11 @@ public class DHISAPIHttpRequestor {
 				byte[] postData = data.getBytes("UTF-8");
 				int    postDataLength = postData.length;
 				
+				//
 				connection.setDoOutput(true);
+				
+				//connection.setInstanceFollowRedirects( false );
+				//connection.setRequestProperty( "charset", "utf-8");
 				connection.setRequestProperty("Content-Length",Integer.toString(postDataLength));
 				System.out.println(data);
 				OutputStream out = connection.getOutputStream();
@@ -58,9 +50,10 @@ public class DHISAPIHttpRequestor {
 			}
 
 			// Get Response
+			//InputStream is = connection.getInputStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-			StringBuilder response = new StringBuilder();
-			
+			StringBuilder response = new StringBuilder(); // or StringBuffer if
+															// not Java 5+
 			String line;
 			while ((line = rd.readLine()) != null) {
 				response.append(line);
